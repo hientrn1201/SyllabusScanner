@@ -1,8 +1,9 @@
 import os
+from helper.token_helper import num_tokens_from_string
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import create_extraction_chain_pydantic
 from pypdf import PdfReader
-from schemas import Course
+from extraction.schemas import Course
 import backoff
 
 
@@ -26,5 +27,7 @@ class Extraction:
 
     @backoff.on_exception(backoff.expo, Exception, max_tries=5)
     def extract(self, text):
+        if num_tokens_from_string(text, "cl100k_base") > 13000:
+            return None
         self.data = self.extraction_chain(text=text)[0].dict()
         return self.data
