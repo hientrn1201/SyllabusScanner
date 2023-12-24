@@ -5,13 +5,15 @@ from langchain.chains import create_extraction_chain_pydantic
 from pypdf import PdfReader
 from extraction.schemas import Course
 import backoff
+# from helper.fake_data import fake_data
+from pydantic import ValidationError
 
 
 class Extraction:
-    def __init__(self, openai_api_key=None):
+    def __init__(self, openai_api_key):
         os.environ["OPENAI_API_KEY"] = openai_api_key
-        self.llm = ChatOpenAI(openai_api_key=openai_api_key, temperature=0)
-        self.data = None
+        self.llm = ChatOpenAI(openai_api_key=openai_api_key,
+                              temperature=0, model_name="gpt-3.5-turbo-1106")
         self.schema = Course
         self.extraction_chain = create_extraction_chain_pydantic(
             pydantic_schema=self.schema, llm=self.llm)
@@ -25,9 +27,7 @@ class Extraction:
             text += page.extract_text()
         return text
 
-    @backoff.on_exception(backoff.expo, Exception, max_tries=5)
+    @backoff.on_exception(backoff.expo, ValidationError, max_tries=3)
     def extract(self, text):
-        if num_tokens_from_string(text, "cl100k_base") > 13000:
-            return None
-        self.data = self.extraction_chain(text=text)[0].dict()
-        return self.data
+        result = self.extraction_chain.run(text)
+        return result[0].dict()
