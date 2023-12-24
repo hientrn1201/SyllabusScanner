@@ -1,6 +1,7 @@
 from typing import Optional, List
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 from enum import Enum
+from pydantic import BaseModel, ConfigDict
 
 
 class DayEnum(str, Enum):
@@ -15,7 +16,9 @@ class DayEnum(str, Enum):
 
 class Time(BaseModel):
     day: DayEnum = Field(description="Days when the class meets")
-    time: str = Field(description="Time of day when the class meets")
+    start_time: str = Field(
+        description="Start time in the format of HH:MM AM/PM")
+    end_time: str = Field(description="End time in the format of HH:MM AM/PM")
 
 
 class Instructor(BaseModel):
@@ -31,7 +34,7 @@ class Component(BaseModel):
 
 class Cutoff(BaseModel):
     letter_grade: str = Field(description="Letter grade (e.g A, A-, B+, etc)")
-    cutoff_score: str = Field(
+    cutoff_score: float = Field(
         description="The score/percentage that required to achieve the correspond letter grade")
 
 
@@ -47,13 +50,13 @@ class Course(BaseModel):
     course_description: str = Field(
         description="General discription of the class")
     location: Optional[List[str]] = Field(
-        description="The location of the class (which classroom)")
+        description="The location of the class (which classroom) (if mentioned)")
     meet_time: Optional[List[Time]] = Field(
-        description="List of day and time when the class meets")
+        description="List of day and time when the class meets (if mentioned)")
     professors: List[Instructor] = Field(
         description="List of professors teaching the class")
     office_hour: Optional[List[Time]] = Field(
-        description="List of day and time when the professor holds offce hours")
+        description="List of day and time when the professor holds offce hours (if mentioned)")
     grading: Optional[Grading] = Field(description="Grading information")
     additional_info: Optional[str] = Field(
         description="Any relevant important information in the syllabus")
