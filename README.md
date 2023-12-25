@@ -14,7 +14,7 @@
 
 ## About The Project
 
-<!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
+https://hientrn-syllabus-scanner.streamlit.app/
 
 The Syllabus Scanner project comes from my love of keeping things organized and a wish to make school life a bit easier. Since I use Notion for notes, I often found myself manually putting syllabus info into these apps. The project aims to automate this process, making it simple to turn syllabus PDFs into organized events in Notion.
 
