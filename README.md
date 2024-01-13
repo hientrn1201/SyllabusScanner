@@ -62,9 +62,16 @@ Before you begin, make sure you have the following:
    ```
 2. Install dependencies
    ```sh
-   pip install -r requirement.txt
+   pip install -r frontend/requirements.txt
+   pip install -r backend/requirements.txt
    ```
-3. Run the program
+3. Add streamlit secret file
+
+   ```sh
+   touch frontend/.streamlit/secrets.toml && echo "backend_url = 'localhost:8000'" > frontend/.streamlit/secrets.toml
+   ```
+
+4. Run the program
 
    ```sh
    cd backend/
