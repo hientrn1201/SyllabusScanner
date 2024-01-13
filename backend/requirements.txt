@@ -1,0 +1,6 @@
+langchain==0.0.352
+openai==1.6.1
+backoff==2.2.1
+fastapi==0.109.0
+uvicorn==0.25.0
+
