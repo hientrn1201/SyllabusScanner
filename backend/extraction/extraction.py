@@ -1,8 +1,6 @@
 import os
-from helper.token_helper import num_tokens_from_string
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import create_extraction_chain_pydantic
-from pypdf import PdfReader
 from extraction.schemas import Course
 import backoff
 # from helper.fake_data import fake_data
@@ -17,15 +15,6 @@ class Extraction:
         self.schema = Course
         self.extraction_chain = create_extraction_chain_pydantic(
             pydantic_schema=self.schema, llm=self.llm)
-
-    def scrape(self, file):
-        reader = PdfReader(file)
-        number_of_pages = len(reader.pages)
-        text = ''
-        for i in range(number_of_pages):
-            page = reader.pages[i]
-            text += page.extract_text()
-        return text
 
     @backoff.on_exception(backoff.expo, ValidationError, max_tries=3)
     def extract(self, text):

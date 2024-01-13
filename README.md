@@ -65,6 +65,11 @@ Before you begin, make sure you have the following:
    pip install -r requirement.txt
    ```
 3. Run the program
+
    ```sh
+   cd backend/
+   uvicorn main:app --reload
+
+   cd frontend/
    streamlit run app.py
    ```
