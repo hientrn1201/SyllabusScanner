@@ -25,7 +25,7 @@ if file is not None:
             else:
                 data = {"openai_api_key": openai_api_key, "text": text}
                 response = requests.post(
-                    "http://localhost:8000/extract", json=data)
+                    f"{st.secrets['backend_url']}/extract", json=data)
 
                 if response.status_code == 200:
                     st.session_state['data'] = response.json().get('data')
@@ -63,7 +63,7 @@ if st.session_state.get("data") is not None:
                 data = {"notion_api_key": notion_api_key,
                         "notion_database_id": notion_database_id, "data": st.session_state['data']}
                 response = requests.post(
-                    "http://localhost:8000/save_to_notion", json=data)
+                    f"{st.secrets['backend_url']}/save_to_notion", json=data)
 
                 if response.status_code == 200:
                     st.success("Successfully created Notion page")
