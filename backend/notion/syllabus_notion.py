@@ -77,5 +77,5 @@ class SyllabusNotion(Notion):
                               for component in self.grading_components] if self.grading_components else [self._create_block("paragraph", "N/A")]
         children.extend(grading_components)
         children.extend([self._create_block("heading_2", "Additional Information"),
-                        self._create_block("paragraph", self.additional_info)])
+                        self._create_block("paragraph", self.additional_info or "")])
         return self._create_notion_page(self.course_title, children)
